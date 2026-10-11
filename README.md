@@ -3,8 +3,7 @@
 A bachelor's final-year team project studying application security and attribute-based access control in an e-commerce application.
 
 **Academic year:** 2024-2025  
-**Authors:** Youssef El Ghouari and Lahcen Houban, with credits retained from the original application  
-**Original team repository:** [Yassermar11/pfe](https://github.com/Yassermar11/pfe)
+**Authors:** Youssef El Ghouari and Lahcen Houban , Yassermar11  
 
 ![Administrative time-based access policy settings](assets/time-policy.png)
 
