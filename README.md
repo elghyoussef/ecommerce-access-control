@@ -8,6 +8,12 @@ A bachelor's final-year team project studying application security and attribute
 
 *Schedule and access-mode configuration from the original project report.*
 
+## Objective
+
+Control who can access an e-commerce application using both user attributes and context, rather than login status alone. The project connects administrator-configured policies to protected application routes.
+
+**Explore:** [Policy interface](views/policy.html) · [Access middleware](fonctionnel/middlewares.js) · [Architecture & formal model](docs/project-overview.md)
+
 ## Focus
 
 - Authentication and session management.
@@ -26,7 +32,23 @@ Node.js, Express, MySQL, HTML/CSS/JavaScript, Python and Flask.
 
 *Age-policy settings: user attributes become inputs to the access decision.*
 
+![Country selection and geographic restriction level in the policy interface](assets/geographic-policy.png)
+
+*Geographic policy: permitted countries and configurable verification levels.*
+
 [Geographic policy flow and visual sources](docs/project-overview.md)
+
+## Code Map
+
+| Component | Source |
+| --- | --- |
+| Application setup | [server.js](server.js) |
+| Authentication and access checks | [auth.js](fonctionnel/auth.js), [middlewares.js](fonctionnel/middlewares.js) |
+| Administrative policies | [securityRoutes.js](fonctionnel/routes/securityRoutes.js) |
+| Formal state-machine model | [model.p](model.p) |
+| Database structure | [schema.sql](database/schema.sql) |
+
+**Technical focus:** separating authentication from authorization, configuring contextual rules, and modelling request/response states. This is an academic prototype, not a production deployment.
 
 <details>
 <summary>Publication scope, setup and security limitations</summary>
