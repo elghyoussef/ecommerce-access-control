@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced ABAC Policy Management | Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- ClockPicker CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.css">
+  <!-- Add boxicons for cart icon -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    :root {
+      --primary: #4a6cf7;
+      --primary-dark: #3a5ce4;
+      --secondary: #6c757d;
+      --danger: #dc3545;
+      --success: #28a745;
+      --warning: #ffc107;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --border-radius: 0.375rem;
+      --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+      --transition: all 0.2s ease-in-out;
+    }
+      body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fb;
+      color: var(--dark);
+      line-height: 1.6;
+      margin-top: 76px; /* Add margin-top to account for fixed navbar */
+    }
+    
+    /* Navigation styles from shop.html */
+    .navbar {
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    
+    .navbar-light .navbar-nav .nav-link {
+      color: black;
+      padding: 0 20px;
+      transition: 0.3s ease;
+    }
+    
+    .navbar-light .navbar-nav .nav-link:hover,
+    .navbar-light .navbar-nav .nav-link.active {
+      color: coral;
+    }
+    
+    .navbar i {
+      font-size: 1.2rem;
+      margin-left: 5px;
+      cursor: pointer;
+      padding: 0 7px;
+      position: relative;
+    }
+    
+    .navbar i:hover {
+      color: coral;
+    }
+    
+    #count {
+      height: 20px;
+      width: 20px;
+      background-color: coral;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -5px;
+      font-size: 0.7rem;
+    }
+    
+    .container-admin {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .admin-header {
+      text-align: center;
+      margin-top: 6.5rem;
+    }
+    
+    .admin-title {
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+    
+    .admin-subtitle {
+      color: var(--gray);
+      font-weight: 400;
+      font-size: 1rem;
+    }
+    
+    .policy-card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      border: none;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    
+    .policy-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+    }
+    
+    .policy-card-header {
+      background-color: white;
+      border-bottom: 1px solid var(--light-gray);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .policy-card-title {
+      font-weight: 600;
+      color: var(--dark);
+      margin: 0;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .policy-card-body {
+      padding: 1.5rem;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .form-label0 {
+      font-weight: 500;
+      color: orange;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .form-control, .form-select {
+      border-radius: var(--border-radius);
+      border: 1px solid var(--light-gray);
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.25rem rgba(74, 108, 247, 0.1);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 0.625rem 1.5rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-primary:focus {
+      box-shadow: 0 0 0 0.25rem rgba(74, 108, 247, 0.3);
+    }
+
+    .btn1-primary {
+      background-color: var(--primary);
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 0.625rem 1.5rem;
+      font-weight: 500;
+      transition: var(--transition);
+      height: 63px;
+    }
+    
+    .btn1-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn1-primary:focus {
+      box-shadow: 0 0 0 0.25rem rgba(74, 108, 247, 0.3);
+    }
+    
+    .search-container {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .search-input {
+      flex: 1;
+    }
+    
+    .search-btn {
+      width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .policy-toggle {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .form-check-input:checked {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .form-check-label {
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .form-text {
+      color: var(--gray);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .disabled-policy {
+      opacity: 0.6;
+    }
+
+    .select-multiple {
+      min-height: 380px;
+    }
+    
+    .badge-primary {
+      background-color: var(--primary);
+    }
+    
+    /* Advanced features */
+    .security-level {
+      width: 100%;
+    }
+    
+    .day-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .day-checkbox {
+      flex: 1;
+      text-align: center;
+    }
+    
+    .day-checkbox input {
+      display: none;
+    }
+    
+    .day-checkbox label {
+      display: block;
+      padding: 0.5rem;
+      background: var(--light-gray);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .day-checkbox input:checked + label {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .device-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .device-option {
+      text-align: center;
+    }
+    
+    .device-option input {
+      display: none;
+    }
+    
+    .device-option label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem;
+      background: var(--light-gray);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .device-option input:checked + label {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .device-option i {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .risk-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .risk-slider {
+      flex: 1;
+    }
+    
+    .risk-value {
+      min-width: 30px;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .policy-priority {
+      width: 100%;
+    }
+    
+    .exceptions-list {
+      border: 1px solid var(--light-gray);
+      border-radius: var(--border-radius);
+      padding: 0.5rem;
+      max-height: 150px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+    }
+    
+    .exception-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .exception-item:last-child {
+      border-bottom: none;
+    }
+    
+    .exception-remove {
+      color: var(--danger);
+      cursor: pointer;
+    }
+    
+    .tab-content {
+      padding: 1rem 0;
+    }
+    
+    .nav-tabs .nav-link.active {
+      font-weight: 500;
+      color: var(--primary);
+    }
+    
+    .selected-country-item {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .selected-country-item:hover {
+      background: #e9ecef;
+    }
+
+    .selected-countries-container {
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 12px;
+      background: white;
+      height: 300px;
+      overflow-y: auto;
+    }
+
+    .country-select-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .country-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .select-multiple {
+      height: 300px !important;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .select-multiple option {
+      padding: 8px 12px;
+      margin: 0;
+      transition: background-color 0.2s;
+    }
+    
+    .select-multiple option:checked {
+      background: linear-gradient(0deg, #4a6cf7 0%, #4a6cf7 100%);
+      color: white;
+    }
+      .select-multiple option:hover {
+      background-color: #e9ecef;
+    }    /* ClockPicker Styles */
+    .clockpicker-popover {
+      z-index: 1050 !important; /* Ensure it appears above other elements */
+      position: absolute !important; /* Force absolute positioning */
+      margin: 0 !important; /* Remove default margins */
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important; /* Enhanced shadow for better visibility */
+    }      .clockpicker input {
+      cursor: pointer;
+      background-color: #f8f9fa; /* Light background for the input */
+      width: 350px; /* Increased width for time inputs */
+      text-align: center; /* Center the time text */
+      font-family: monospace; /* Better alignment for time display */
+      letter-spacing: 0.5px; /* Better spacing for readability */
+    }
+    
+    .clockpicker input:hover {
+      background-color: #e9ecef; /* Slightly darker on hover */
+    }
+    
+    /* Fix for the ClockPicker placement */
+    .clockpicker-align-top {
+      margin: 0 !important; /* Remove margins that can affect positioning */
+    }
+    
+    /* Ensure the popover is fully visible and nicely styled */
+    .popover {
+      max-width: none;
+      border-radius: 8px; /* Rounded corners */
+      border: 1px solid rgba(0,0,0,0.1); /* Subtle border */
+    }
+      /* Override Bootstrap's default arrow positioning */
+    .clockpicker-popover .arrow {
+      display: none !important; /* Hide the popover arrow for cleaner look */
+    }
+    
+    /* Time policy save button positioning */
+    .time-policy-save-button {
+      display: block;
+      text-align: left;
+      padding-left: 12px;
+      margin-bottom: 15px; /* Add some spacing at the bottom */
+    }
+
+    /* Navigation styles */
+    .navbar {
+      background-color: #343a40;
+      padding: 0.5rem 1rem;
+    }
+    
+    .navbar-brand {
+      color: white;
+      font-weight: 500;
+      font-size: 1.25rem;
+    }
+    
+    .navbar-nav .nav-link {
+      color: white;
+      padding: 0.5rem 1rem;
+      transition: background-color 0.2s;
+    }
+    
+    .navbar-nav .nav-link:hover {
+      background-color: rgb(255, 255, 255);
+    }
+    
+    .navbar-nav .nav-link.active {
+      background-color: #007bff;
+      color: white;
+    }
+    
+    .navbar-toggler {
+      border: none;
+    }
+    
+    .navbar-collapse {
+      justify-content: flex-end;
+    }
+    
+    .cart-icon {
+      color: white;
+      font-size: 1.5rem;
+      position: relative;
+    }
+    
+    .cart-icon .bi-cart {
+      font-size: 1.2rem;
+    }
+    
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      background-color: #dc3545;
+      color: white;
+      border-radius: 50%;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation bar from shop.html -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 fixed-top">
+    <div class="container">
+      <a href="home"> <img src="/img/logo1.png" alt="logo"> </a>
+      <button id="bar" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item ">
+            <a class="nav-link" href="home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="shop">Shop</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#footer">Contact Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="admin">Admin Page</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile">Profile</a>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-admin">
+    <div class="admin-header">
+      <h1 class="admin-title">Gestion des politiques ABAC</h1>
+      <p class="admin-subtitle">Configurez des règles d'accès granulaires basées sur les attributs</p>
+    </div>
+    
+    <form id="abacPolicyForm">
+      <div class="tab-content" id="policyTabsContent">
+        <!-- Onglet Policies de Base -->
+        <div class="tab-pane fade show active" id="basic-policies" role="tabpanel">
+          <!-- Policy Country - Version améliorée -->
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <h3 class="policy-card-title">
+                <i class="bi bi-globe"></i>
+                Restriction Géographique
+                <span class="badge bg-info ms-2" data-bs-toggle="tooltip" data-bs-html="true" title="<strong> IP + Géolocalisation + Fuseau horaire</strong><br>Utilise l'adresse IP, la géolocalisation et le fuseau horaire pour déterminer l'emplacement de l'utilisateur.">
+                  3 méthodes de vérification
+                </span>
+                <span class="badge bg-success ms-2" data-bs-toggle="tooltip" data-bs-html="true" title="<strong>Niveau 1: </strong>1 vérification vrai<br><strong>Niveau 2: </strong>2 vérifications vrai<br><strong>Niveau 3: </strong>3 vérifications vrai <br>Utilisez le niveau de sécurité pour définir le nombre de vérifications nécessaires.">
+                  3 niveau de vérification
+                </span>
+              </h3>
+            </div>
+            <div class="policy-card-body" id="countryPolicyBody">
+              <div class="row">
+                <div for="geoMode" class="form-label0">Pour desactiver cette option veiller choisir "Desactiver" dans la section de 'Niveau de Securité'.</div>
+                <div class="col-md-6">
+                  <label for="geoMode" class="form-label">Mode de restriction</label>
+                  <select class="form-select" id="geoMode">
+                    <option value="blacklist">Bloquer les pays sélectionnés</option>
+                    <option value="whitelist">Autoriser juste les pays sélectionnés</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="securitylevel" class="form-label">Niveau de Securité</label>
+                  <select class="form-select security-level" id="securitylevel">
+                    <option value="0">Désactivé</option>
+                    <option value="1">Niveau 1 (Bas)</option>
+                    <option value="2">Niveau 2 (Normal)</option>
+                    <option value="3">Niveau 3 (Elevée)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-check mt-2 mb-3">
+                <input class="form-check-input" type="checkbox" id="allowLocalhost" checked>
+                <label class="form-check-label" for="allowLocalhost">
+                  Autoriser l'accès localhost (utilisé pour le développement)
+                </label>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="countrySelect" class="form-label">Liste des pays disponibles</label>                  
+                  <select multiple class="form-control select-multiple" id="countrySelect" size="15" style="height: 300px;">
+                    <option value="AF">Afghanistan</option>
+                    <option value="AL">Albania</option>
+                    <option value="DZ">Algeria</option>
+                    <option value="AD">Andorra</option>
+                    <option value="AO">Angola</option>
+                    <option value="AR">Argentina</option>
+                    <option value="AU">Australia</option>
+                    <option value="AT">Austria</option>
+                    <option value="BE">Belgium</option>
+                    <option value="BR">Brazil</option>
+                    <option value="CA">Canada</option>
+                    <option value="CN">China</option>
+                    <option value="DK">Denmark</option>
+                    <option value="DJ">Djibouti</option>
+                    <option value="DM">Dominica</option>
+                    <option value="DO">Dominican Republic</option>
+                    <option value="EC">Ecuador</option>
+                    <option value="SV">El Salvador</option>
+                    <option value="GQ">Equatorial Guinea</option>
+                    <option value="ER">Eritrea</option>
+                    <option value="EE">Estonia</option>
+                    <option value="SZ">Eswatini</option>
+                    <option value="ET">Ethiopia</option>
+                    <option value="FJ">Fiji</option>
+                    <option value="FI">Finland</option>
+                    <option value="FR">France</option>
+                    <option value="GA">Gabon</option>
+                    <option value="GM">Gambia</option>
+                    <option value="GE">Georgia</option>
+                    <option value="GH">Ghana</option>
+                    <option value="GT">Guatemala</option>
+                    <option value="GN">Guinea</option>
+                    <option value="GW">Guinea-Bissau</option>
+                    <option value="GY">Guyana</option>
+                    <option value="HT">Haiti</option>
+                    <option value="HN">Honduras</option>
+                    <option value="HU">Hungary</option>
+                    <option value="IS">Iceland</option>
+                    <option value="IL">Israel</option>
+                    <option value="IT">Italy</option>
+                    <option value="KZ">Kazakhstan</option>
+                    <option value="KE">Kenya</option>
+                    <option value="KI">Kiribati</option>
+                    <option value="KW">Kuwait</option>
+                    <option value="KG">Kyrgyzstan</option>
+                    <option value="LA">Laos</option>
+                    <option value="LV">Latvia</option>
+                    <option value="LB">Lebanon</option>
+                    <option value="LS">Lesotho</option>
+                    <option value="LR">Liberia</option>
+                    <option value="LY">Libya</option>
+                    <option value="LI">Liechtenstein</option>
+                    <option value="LT">Lithuania</option>
+                    <option value="LU">Luxembourg</option>
+                    <option value="MG">Madagascar</option>
+                    <option value="MW">Malawi</option>
+                    <option value="MY">Malaysia</option>
+                    <option value="MV">Maldives</option>
+                    <option value="ML">Mali</option>
+                    <option value="MT">Malta</option>
+                    <option value="MH">Marshall Islands</option>
+                    <option value="MR">Mauritania</option>
+                    <option value="MU">Mauritius</option>
+                    <option value="MX">Mexico</option>
+                    <option value="FM">Micronesia</option>
+                    <option value="MD">Moldova</option>
+                    <option value="MC">Monaco</option>
+                    <option value="MN">Mongolia</option>
+                    <option value="ME">Montenegro</option>
+                    <option value="MA">Morocco</option>
+                    <option value="MZ">Mozambique</option>
+                    <option value="MM">Myanmar</option>
+                    <option value="NA">Namibia</option>
+                    <option value="NR">Nauru</option>
+                    <option value="NP">Nepal</option>
+                    <option value="NI">Nicaragua</option>
+                    <option value="NE">Niger</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="MK">North Macedonia</option>
+                    <option value="NO">Norway</option>
+                    <option value="OM">Oman</option>
+                    <option value="PK">Pakistan</option>
+                    <option value="PW">Palau</option>
+                    <option value="PA">Panama</option>
+                    <option value="PG">Papua New Guinea</option>
+                    <option value="PY">Paraguay</option>
+                    <option value="PE">Peru</option>
+                    <option value="PH">Philippines</option>
+                    <option value="PL">Poland</option>
+                    <option value="PT">Portugal</option>
+                    <option value="QA">Qatar</option>
+                    <option value="RE">Réunion</option>
+                    <option value="RO">Romania</option>
+                    <option value="RU">Russia</option>
+                    <option value="RW">Rwanda</option>
+                    <option value="WS">Samoa</option>
+                    <option value="SM">San Marino</option>
+                    <option value="ST">Sao Tome and Principe</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="SN">Senegal</option>
+                    <option value="RS">Serbia</option>
+                    <option value="SC">Seychelles</option>
+                    <option value="SL">Sierra Leone</option>
+                    <option value="SG">Singapore</option>
+                    <option value="SK">Slovakia</option>
+                    <option value="SI">Slovenia</option>
+                    <option value="SB">Solomon Islands</option>
+                    <option value="SO">Somalia</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="KR">South Korea</option>
+                    <option value="SS">South Sudan</option>
+                    <option value="ES">Spain</option>
+                    <option value="LK">Sri Lanka</option>
+                    <option value="SD">Sudan</option>
+                    <option value="SR">Suriname</option>
+                    <option value="SZ">Swaziland</option>
+                    <option value="SE">Sweden</option>
+                    <option value="CH">Switzerland</option>
+                    <option value="SY">Syria</option>
+                    <option value="TJ">Tajikistan</option>
+                    <option value="TZ">Tanzania</option>
+                    <option value="TH">Thailand</option>
+                    <option value="TG">Togo</option>
+                    <option value="TK">Tokelau</option>
+                    <option value="TO">Tonga</option>
+                    <option value="TT">Trinidad and Tobago</option>
+                    <option value="TN">Tunisia</option>
+                    <option value="TR">Turkey</option>
+                    <option value="TM">Turkmenistan</option>
+                    <option value="TV">Tuvalu</option>
+                    <option value="UG">Uganda</option>
+                    <option value="UA">Ukraine</option>
+                    <option value="AE">United Arab Emirates</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="US">United States</option>
+                    <option value="UY">Uruguay</option>
+                    <option value="UZ">Uzbekistan</option>
+                    <option value="VU">Vanuatu</option>
+                    <option value="VE">Venezuela</option>
+                    <option value="VN">Vietnam</option>
+                    <option value="YE">Yemen</option>
+                    <option value="ZM">Zambia</option>
+                    <option value="ZW">Zimbabwe</option>
+                  </select>
+                </div>                
+                <div class="col-md-6">
+                  <label class="form-label">Pays sélectionnés</label>                    
+                  <div class="selected-countries-container" style="border: 1px solid #dee2e6; border-radius: 4px; height: 300px; overflow-y: auto; padding: 10px; background: #fff;">
+                    <div id="selectedCountriesList">
+                      <!-- Selected countries will be displayed here -->
+                    </div>
+                  </div>
+                  
+                  <div class="mt-3 row">
+                    <div class="col-6">
+                      <button type="button" class="btn btn-primary" id="saveSelectedCountries">
+                        <i class="bi bi-save"></i> Enregistrer la sélection
+                      </button>
+                    </div>
+                    <div class="col-6 text-end">
+                      <button type="button" class="btn btn-outline-danger" id="clearSelectedCountries">
+                        <i class="bi bi-trash"></i> Supprimer tous les pays
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <small class="form-text">
+                <i class="bi bi-info-circle"></i>
+                Configurez les restrictions d'accès basées sur la localisation géographique des utilisateurs.
+              </small>
+            </div>
+          </div>
+          
+          <!-- Policy Age - Version améliorée -->
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <h3 class="policy-card-title">
+                <i class="bi bi-person"></i>
+                Restriction par Âge
+              </h3>
+            </div>
+            <div class="policy-card-body" id="agePolicyBody">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="minAge" class="form-label">Âge minimum</label>
+                  <input type="number" class="form-control" id="minAge" value="18" min="1" max="120">
+                </div>
+                <div class="col-md-6">
+                  <label for="maxAge" class="form-label">Âge maximum (optionnel)</label>
+                  <input type="number" class="form-control" id="maxAge" min="1" max="120" placeholder="Aucune limite">
+                </div>
+                <div class="col-12 mt-2">
+                  <button type="button" class="btn btn-outline-secondary btn-sm" id="resetAgeDefaults">
+                    <i class="bi bi-arrow-counterclockwise"></i> Défaut
+                  </button>
+                </div>
+              </div>
+              <small class="form-text">
+                <i class="bi bi-info-circle"></i>
+                Définissez les restrictions d'âge pour l'accès à l'application.
+              </small>
+              <div class="mt-3">
+                <button type="button" class="btn btn-primary" id="saveAgePolicy">
+                  <i class="bi bi-save"></i> Enregistrer la politique d'âge
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Policy Time - Version améliorée -->
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <h3 class="policy-card-title">
+                <i class="bi bi-clock"></i>
+                Restriction Horaire
+              </h3>              <div class="policy-toggle">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="timePolicyStatus" id="timeActive" value="active" checked>
+                  <label class="form-check-label" for="timeActive">Custom</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="timePolicyStatus" id="time24" value="24/24">
+                  <label class="form-check-label" for="time24">24/24</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="timePolicyStatus" id="timeMaintenance" value="maintenance">
+                  <label class="form-check-label" for="timeMaintenance">Maintenance</label>
+                </div>
+              </div>
+            </div>            <div class="policy-card-body" id="timePolicyBody">              <div class="mb-3">
+                <div class="alert alert-primary time-mode-info" id="customInfo">
+                  <i class="bi bi-info-circle"></i> 
+                  Mode Custom : L'application sera accessible selon les plages horaires et jours spécifiés. Notez que les utilisateurs VIP ont accès 24/24 par défaut, quelle que soit la configuration.
+                </div>
+                <div class="alert alert-info time-mode-info" id="mode24Info" style="display: none;">
+                  <i class="bi bi-info-circle"></i> 
+                  Mode 24/24 : L'application sera accessible à tous les utilisateurs à tout moment, tous les jours.
+                </div>
+                <div class="alert alert-warning time-mode-info" id="maintenanceInfo" style="display: none;">
+                  <i class="bi bi-tools"></i> 
+                  Mode maintenance : L'application sera accessible uniquement aux administrateurs. Tous les autres utilisateurs verront un message de maintenance.
+                </div>
+              </div>
+                
+              <div id="timeSettingsContainer" class="time-settings">
+                <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="startTime" class="form-label">Heure de début</label>
+                  <div class="clockpicker">
+                    <input type="text" class="form-control" id="startTime" value="08:00" readonly>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="endTime" class="form-label">Heure de fin</label>
+                  <div class="clockpicker">
+                    <input type="text" class="form-control" id="endTime" value="20:00" readonly>
+                  </div>
+                </div>
+              </div>
+              
+              <label class="form-label">Jours d'application</label>
+              <div class="day-selector">
+                <div class="day-checkbox">
+                  <input type="checkbox" id="dayMonday" checked>
+                  <label for="dayMonday">Lun</label>
+                </div>
+                <div class="day-checkbox">
+                  <input type="checkbox" id="dayTuesday" checked>
+                  <label for="dayTuesday">Mar</label>
+                </div>
+                <div class="day-checkbox">
+                  <input type="checkbox" id="dayWednesday" checked>
+                  <label for="dayWednesday">Mer</label>
+                </div>
+                <div class="day-checkbox">
+                  <input type="checkbox" id="dayThursday" checked>
+                  <label for="dayThursday">Jeu</label>
+                </div>
+                <div class="day-checkbox">
+                  <input type="checkbox" id="dayFriday" checked>
+                  <label for="dayFriday">Ven</label>
+                </div>
+                <div class="day-checkbox">
+                  <input type="checkbox" id="daySaturday">
+                  <label for="daySaturday">Sam</label>
+                </div>
+                <div class="day-checkbox">
+                  <input type="checkbox" id="daySunday">
+                  <label for="daySunday">Dim</label>
+                </div>
+              </div>                <small class="form-text">
+                <i class="bi bi-info-circle"></i>
+                L'accès sera refusé en dehors des plages horaires spécifiées.
+              </small>
+              
+              <div class="mt-3">
+                <button type="button" class="btn btn-primary" id="saveTimePolicy">
+                  <i class="bi bi-save"></i> Enregistrer la politique horaire
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>    <script src="/js/countryPolicy.js"></script>
+  <script src="/js/agePolicy.js"></script>
+  <script src="/js/timePolicy.js"></script>
+  <!-- ClockPicker JS (after jQuery) -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.js"></script>
+  <script src="/js/clockpicker-init.js"></script>  <script>document.addEventListener('DOMContentLoaded', function() {    // Initialize ClockPicker
+    $('.clockpicker').clockpicker({
+      autoclose: true,
+      placement: 'right',
+      align: 'top',
+      donetext: 'Valider',
+      beforeShow: function() {
+        // Ensure the popover will be placed beside the input
+        const input = $(this).find('input');
+        const inputOffset = input.offset();
+        const inputWidth = input.outerWidth();
+        
+        // Store original position to use later
+        $(this).data('inputPos', {
+          top: inputOffset.top,
+          left: inputOffset.left + inputWidth + 10 // Position right of input with small gap
+        });
+      },
+      afterShow: function() {
+        // Reposition the popover to be beside the input
+        const popover = $('.clockpicker-popover');
+        const posData = $(this).data('inputPos');
+        
+        if (popover.length && posData) {
+          // Adjust vertical position to align with the input
+          popover.css({
+            'top': posData.top - (popover.outerHeight() / 2) + 20 + 'px',
+            'left': posData.left + 'px'
+          });
+          
+          // Make sure it's not off-screen
+          const windowHeight = $(window).height();
+          const windowWidth = $(window).width();
+          const popoverTop = popover.offset().top;
+          const popoverLeft = popover.offset().left;
+          const popoverHeight = popover.outerHeight();
+          const popoverWidth = popover.outerWidth();
+          
+          // Adjust if off bottom
+          if (popoverTop + popoverHeight > windowHeight) {
+            popover.css('top', (windowHeight - popoverHeight - 10) + 'px');
+          }
+          
+          // Adjust if off right edge
+          if (popoverLeft + popoverWidth > windowWidth) {
+            popover.css('left', (windowWidth - popoverWidth - 10) + 'px');
+          }
+        }
+      },
+      // Format time in HH:MM only for UI display
+      afterDone: function() {
+        const input = $(this.input);
+        if (input.length) {
+          let timeValue = input.val();
+          
+          // Format time as HH:MM
+          const parts = timeValue.split(':');
+          if (parts.length >= 2) {
+            const formattedTime = parts[0].padStart(2, '0') + ':' + parts[1].padStart(2, '0');
+            input.val(formattedTime);
+          }
+        }
+      }
+    });
+      // No need for clock icon click handling since we removed the icons
+
+    const resetBtn = document.getElementById('resetAgeDefaults');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        document.getElementById('minAge').value = 18;
+        document.getElementById('maxAge').value = 120;
+      });
+    }
+    
+    // Show success message in console
+    console.log('ClockPicker initialization complete');
+  });
+  </script>
+</body>
+</html>

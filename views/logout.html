@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>logout-page</title>
+  <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .parentxx {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+    
+    .parentxx .containerz {
+      width: 100%;
+      height: auto;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: none;
+    }
+    
+    .parentxx h1 {
+      text-align: center;
+      color: #333;
+      position: static;
+      margin-bottom: 20px;
+    }
+    
+    .parentxx p {
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+    
+    .parentxx .p1 {
+      font-size: 24px;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      color: #333 !important;
+      display: flex; /* Utiliser flex pour aligner l'icône et le texte */
+      align-items: center; /* Centrer verticalement */
+      justify-content: center; /* Centrer horizontalement */
+    }
+    
+    .parentxx .p2 {
+      font-size: 14px;
+      opacity: .9;
+      color: #666 !important;
+      margin: 1px 30px;
+      margin-top: 15px;
+    }
+    
+    .parentxx .input3 {
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px;
+      opacity: .9;
+      font-size: 16px;
+      border-radius: 5px;
+      background-color: coral;
+      border: none;
+      letter-spacing: .3px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .parentxx .input3:hover {
+      background-color: coral;
+      transform: none;
+      transition: background-color 0.3s;
+    }
+    
+    .parentxx .imglogo {
+      display: none;
+    }
+
+    .p1 i {
+      margin-right: 10px; /* Espace entre l'icône et le texte */
+      font-size: 32px; /* Taille de l'icône */
+      color: coral; /* Couleur de l'icône */
+    }
+  </style>
+</head>
+<body>
+  <div class="parentxx">
+      <div class="containerz">
+        <p class='p1'><i class='bx bx-log-out'></i>See you again!</p> <!-- Icône ajoutée ici -->
+        <p class='p2'>Thanks for using our website. You are now successfully signed out.</p>
+        <a href="/login"> <input type="button" class='input3' value="Return to login" /></a>
+      </div>
+    </div>
+</body>
+</html>

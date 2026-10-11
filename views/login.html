@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>login-page</title>
+    <link rel="stylesheet" href="stylesheets/login.css" />
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .parent1 {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center; /* Aligner verticalement l'icône */
+            justify-content: center; /* Centrer horizontalement */
+        }
+        
+        .h33 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+            margin-left: 10px; /* Espace entre l'icône et le texte */
+        }
+        
+        .pspan {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .pspan a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .pspan a:hover {
+            text-decoration: underline;
+        }
+        
+        .login {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .input-container {
+            position: relative;
+            width: 80%;
+            margin: 10px auto;
+        }
+
+        .input-container i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 18px;
+        }
+
+        .inputs {
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .inputs:focus {
+            outline: none;
+            border-color: coral;
+            box-shadow: 0 0 0 2px rgba(255, 127, 80, 0.1);
+        }
+
+        .inputs.txt {
+            background-color: #f8f9fa;
+        }
+
+        .inputs.bn {
+            width: 80%;
+            margin: 10px auto;
+            background-color: coral;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            padding: 12px;
+        }
+
+        .inputs.bn:hover {
+            background-color: #ff7f50; /* Changer la couleur au hover */
+        }
+
+        .rem {
+            font-size: 12px;
+            color: #666;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .rem:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parent1">
+        <form class="login" action="/login" method="POST">
+            <div class="title">
+                <i class='bx bx-log-in' style="font-size: 32px; color: coral; margin-right: 10px;"></i> <!-- Icône ajoutée ici -->
+                <h3 class="h33">Log in</h3>
+            </div>
+            <p class="pspan">
+                <span>or</span> <a href="/register">Create an account</a>
+            </p>
+
+            <div class="input-container">
+                <i class='bx bx-envelope'></i>
+                <input type="email" class="inputs txt" placeholder="Email address" name="email" required />
+            </div>
+
+            <div class="input-container">
+                <i class='bx bx-lock'></i>
+                <input type="password" class="inputs txt" placeholder="Password" name="password" required />
+            </div>
+
+            <input type="submit" class="inputs bn" value="Log in" />
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.login');
+            
+            async function getGeolocationInfo() {
+                let ip = null;
+                let latitude = null;
+                let longitude = null;
+                let timezone = null;
+                let country = null; // Country will now be determined server-side
+                let isLocalhost = (location.hostname === "localhost" || location.hostname === "127.0.0.1");
+
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Geolocation and IP fetch timed out after 10 seconds')), 10000)
+                );
+
+                try {
+                    const ipPromise = fetch('https://api.ipify.org?format=json')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to fetch IP address. Status: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            ip = data.ip;
+                            // Update isLocalhost based on fetched IP as well, if it's a known localhost IP
+                            if (ip === '127.0.0.1' || ip === '::1') {
+                                isLocalhost = true;
+                            }
+                        })
+                        .catch(err => {
+                            console.warn('IPify error:', err.message);
+                            // Don't throw here, allow geolocation to proceed if possible
+                            // isLocalhost would have been set by location.hostname
+                        });
+
+                    const geoPromise = new Promise((resolve, reject) => {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(position => {
+                                latitude = position.coords.latitude;
+                                longitude = position.coords.longitude;
+                                try {
+                                    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                                } catch (e) {
+                                    console.warn("Could not determine timezone:", e);
+                                    timezone = 'Unknown'; // Set a default if timezone detection fails
+                                }
+                                resolve();
+                            }, error => {
+                                console.warn(`Geolocation error: ${error.message} (Code: ${error.code})`);
+                                // Resolve even on error so that IP info (if fetched) can still be sent
+                                // Server will handle missing lat/lon
+                                resolve(); 
+                            }, { timeout: 5000 }); // 5 second timeout for navigator.geolocation
+                        } else {
+                            console.warn("Geolocation is not supported by this browser.");
+                            resolve(); // Resolve if not supported
+                        }
+                    });
+
+                    // Wait for IP and Geo, but handle timeout for the whole operation
+                    await Promise.race([Promise.all([ipPromise, geoPromise]), timeoutPromise]);
+                    
+                    return { ip, latitude, longitude, timezone, country: null, isLocalhost}; // Send country as null
+
+                } catch (error) {
+                    console.error("Error in getGeolocationInfo:", error.message);
+                    // Ensure an object is always returned, even on top-level errors, for consistent handling
+                    return { ip, latitude, longitude, timezone, country: null, isLocalhost, error: error.message };
+                }
+            }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                let geoInfo;
+                try {
+                    geoInfo = await getGeolocationInfo();
+                } catch (geoError) {
+                    console.error('Geolocation error:', geoError);
+                    alert('Could not retrieve geolocation data: ' + geoError.message + '. Proceeding with login attempt.');
+                    geoInfo = { error: true, message: geoError.message }; // Indicate geolocation error
+                }
+                
+                try {
+                    const email = document.querySelector('input[type="email"]').value;
+                    const password = document.querySelector('input[type="password"]').value;
+                    
+                    // Première étape : Vérification email/mot de passe
+                    const loginResponse = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            email, 
+                            password,
+                            geoInfo // Inclure les informations géographiques (ou l'erreur)
+                        })
+                    });
+                    
+                    const responseData = await loginResponse.json();
+
+                    if (!loginResponse.ok) {
+                        throw new Error(responseData.message || `Login failed with status: ${loginResponse.status}`);
+                    }
+
+                    // Si la connexion réussit
+                    if (responseData.redirectUrl) {
+                        window.location.href = responseData.redirectUrl;
+                    } else {
+                        // Fallback if redirectUrl is not provided, though it should be
+                        window.location.href = '/'; 
+                    }
+                    
+                } catch (error) {
+                    console.error('Login error details:', error);
+                    alert('Login failed: ' + error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

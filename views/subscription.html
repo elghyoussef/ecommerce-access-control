@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Subscription - eShop</title>
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .vip-header {
+      background: linear-gradient(135deg, #ff7f50, coral);
+      color: white;
+      padding: 50px 0;
+      margin-top: 76px;
+      text-align: center;
+    }
+    
+    .vip-crown {
+      font-size: 3rem;
+      color: gold;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+    
+    .subscription-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 30px;
+      transition: transform 0.3s;
+    }
+    
+    .subscription-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card-header {
+      background: linear-gradient(135deg, #ff7f50, coral);
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+    }
+    
+    .price {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 15px 0 5px;
+    }
+    
+    .price-period {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    
+    .vip-badge {
+      display: inline-block;
+      background: gold;
+      color: #222;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      margin-left: 10px;
+      text-transform: uppercase;
+    }
+    
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .feature-list li {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+    }
+    
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .feature-list i {
+      color: coral;
+      margin-right: 15px;
+      font-size: 1.2rem;
+    }
+    
+    .premium-feature {
+      font-weight: 600;
+    }
+    
+    .btn-vip {
+      background: coral;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.3s;
+    }
+    
+    .btn-vip:hover {
+      background: #ff7f50;
+      color: white;
+    }
+    
+    .payment-methods {
+      text-align: center;
+      margin-top: 20px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 fixed-top">
+    <div class="container">
+      <a href="home"> <img src="/img/logo1.png" alt="logo"> </a>
+      <button id="bar" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="shop">Shop</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#footer">Contact Us</a>
+          </li>
+          <li class="nav-item" id="admin-link" style="display: none;">
+            <a class="nav-link" href="admin">Admin Page</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout">logout</a>
+          </li>
+          <li class="nav-item">
+            <i class='bx bx-cart' onclick="window.location.href = '/cart';" id="btn">
+              <p id="count">0</p>
+            </i>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- VIP Header -->
+  <header class="vip-header">
+    <div class="container">
+      <i class="bx bxs-crown vip-crown"></i>
+      <h1>Devenez Membre VIP</h1>
+      <p class="lead">Accédez à notre boutique 24h/24 et 7j/7!</p>
+    </div>
+  </header>
+
+  <!-- Subscription Section -->
+  <section class="container my-5">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="subscription-card">
+          <div class="card-header">
+            <h2>Abonnement VIP <span class="vip-badge">Premium</span></h2>
+            <div class="price">199 DH</div>
+            <div class="price-period">par mois</div>
+          </div>
+          <div class="card-body">
+            <ul class="feature-list mb-4">
+              <li><i class="bx bx-check-circle"></i> <span class="premium-feature">Accès 24h/24 et 7j/7 à la boutique</span></li>
+              <li><i class="bx bx-check-circle"></i> <span class="premium-feature">Contournez les restrictions horaires</span></li>
+              <li><i class="bx bx-check-circle"></i> Accès pendant les périodes de maintenance</li>
+              <li><i class="bx bx-check-circle"></i> Service client prioritaire</li>
+              <li><i class="bx bx-check-circle"></i> Notifications en avance des nouvelles arrivées</li>
+            </ul>
+            
+            <div id="subscription-status">
+              <!-- This will be updated by JavaScript -->
+              <div class="alert alert-info mb-4">
+                <i class="bx bx-info-circle"></i> Mode démonstration : Cliquez sur le bouton pour activer votre accès VIP sans paiement réel.
+              </div>
+              
+              <form id="vip-form">
+                <div class="form-group mb-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="terms" required>
+                    <label class="custom-control-label" for="terms">J'accepte les conditions d'utilisation</label>
+                  </div>
+                </div>
+                
+                <button type="submit" class="btn btn-vip">
+                  <i class="bx bx-crown"></i> Activer mon statut VIP
+                </button>
+              </form>
+              
+              <div class="payment-methods mt-3">
+                <img src="/img/payment.png" alt="Méthodes de paiement">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="row mt-5">
+      <div class="col-lg-4">
+        <div class="text-center mb-4">
+          <i class="bx bx-time-five" style="font-size: 3rem; color: coral;"></i>
+          <h3 class="mt-3">Accès 24/7</h3>
+          <p>Faites vos achats à n'importe quelle heure du jour ou de la nuit, sans restrictions.</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="text-center mb-4">
+          <i class="bx bx-lock-open-alt" style="font-size: 3rem; color: coral;"></i>
+          <h3 class="mt-3">Sans Blocage</h3>
+          <p>Contournez toutes les restrictions géographiques ou temporelles appliquées à notre boutique.</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="text-center mb-4">
+          <i class="bx bx-support" style="font-size: 3rem; color: coral;"></i>
+          <h3 class="mt-3">Support Prioritaire</h3>
+          <p>Bénéficiez d'un service client prioritaire pour toutes vos questions ou problèmes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-5 py-5" id="footer">
+    <div class="row container mx-auto pt-5">
+      <div class="footer-one col-lg-3 col-md-6 col-12">
+        <img src="/img/logo2.png" alt="">
+        <p class="pt-3">
+          Bienvenue sur eShop ! Nous proposons une large gamme de produits de qualité, soigneusement sélectionnés pour répondre à tous vos besoins. Notre mission est de vous offrir une expérience d'achat en ligne simple, rapide et sécurisée.
+          Pour toute question, n'hésitez pas à nous contacter via les informations ci-dessous.
+        </p>
+      </div>
+      <div class="footer-one col-lg-3 col-md-6 col-12">
+        <h5 class="pb-2">Features</h5>
+        <ul class="text-uppercase list-unstyled">
+          <li><a href="#">Men</a></li>
+          <li><a href="#">women</a></li>
+          <li><a href="#">boys</a></li>
+          <li><a href="#">girls</a></li>
+          <li><a href="#">new arrivals</a></li>
+          <li><a href="#">shoes</a></li>
+          <li><a href="#">clothes</a></li>
+        </ul>
+      </div>
+      <div class="footer-one col-lg-3 col-md-6 col-12 mb-3">
+        <h5 class="pb-2">Contact Us</h5>
+        <div>
+          <h6 class="text-uppercase">Address</h6>
+          <p>Casablanca, Maroc</p>
+        </div>
+        <div>
+          <h6 class="text-uppercase">Phone</h6>
+          <p>0000000000</p>
+        </div>
+        <div>
+          <h6 class="text-uppercase">Email</h6>
+          <p>contact@example.com</p>
+        </div>
+      </div>
+      <div class="footer-one col-lg-3 col-md-6 col-12">
+        <h5 class="pb-2">Instagram</h5>
+        <div class="row">
+          <img class="img-fluid w-25 h-100 m-2" src="/img/insta/1.jpg" alt="">
+          <img class="img-fluid w-25 h-100 m-2" src="/img/insta/2.jpg" alt="">
+          <img class="img-fluid w-25 h-100 m-2" src="/img/insta/3.jpg" alt="">
+          <img class="img-fluid w-25 h-100 m-2" src="/img/insta/4.jpg" alt="">
+          <img class="img-fluid w-25 h-100 m-2" src="/img/insta/5.jpg" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="copyright mt-5">
+      <div class="row container mx-auto">
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <img src="/img/payment.png" alt="">
+        </div>
+        <div class="col-lg-4 col-md-6 col-12 mb-2">
+          <p>eShop eCommerce &copy; 2025.<br> All Rights Reserved <br> developed by Houban Lahcen, Elghouari Youssef and Yasser Marzouhi </p>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+          <a href="#"><i class='bx bxl-facebook'></i></a>
+          <a href="#"><i class='bx bxl-instagram'></i></a>
+          <a href="#"><i class='bx bxl-linkedin'></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript for VIP subscription -->
+  <script src="/js/cart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const vipForm = document.getElementById('vip-form');
+      const subscriptionStatus = document.getElementById('subscription-status');
+      
+      // Check if user is already VIP
+      fetch('/api/user')
+        .then(response => response.json())
+        .then(user => {
+          console.log('User data:', user);
+          
+          // Show admin link if user is admin
+          if (user.isAdmin) {
+            document.getElementById('admin-link').style.display = 'block';
+          }
+          
+          // Check if user is already VIP
+          if (user.isVIP) {
+            subscriptionStatus.innerHTML = `
+              <div class="alert alert-success mb-4">
+                <i class="bx bx-check-circle"></i> Vous êtes déjà membre VIP ! Profitez de tous les avantages exclusifs.
+              </div>
+              <a href="/shop" class="btn btn-vip">
+                <i class="bx bx-shopping-bag"></i> Retourner à la boutique
+              </a>
+            `;
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching user data:', err);
+        });
+      
+      // Handle form submission
+      vipForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Check if terms are accepted
+        if (!document.getElementById('terms').checked) {
+          alert('Veuillez accepter les conditions d\'utilisation.');
+          return;
+        }
+        
+        // Disable the button to prevent multiple clicks
+        const submitBtn = vipForm.querySelector('button');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Traitement en cours...';
+        
+        // Send request to upgrade to VIP
+        fetch('/api/subscribe/vip', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Success message
+            subscriptionStatus.innerHTML = `
+              <div class="alert alert-success mb-4">
+                <i class="bx bx-check-circle"></i> Félicitations ! Vous êtes maintenant membre VIP !
+              </div>
+              <p class="text-center mb-4">Votre compte a été mis à niveau avec succès. Vous pouvez maintenant accéder à notre boutique 24h/24 et 7j/7.</p>
+              <a href="/shop" class="btn btn-vip">
+                <i class="bx bx-shopping-bag"></i> Commencer mes achats
+              </a>
+            `;
+          } else {
+            throw new Error(data.error || 'Une erreur s\'est produite lors de la mise à niveau.');
+          }
+        })
+        .catch(error => {
+          // Error handling
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="bx bx-crown"></i> Activer mon statut VIP';
+          
+          alert('Erreur: ' + error.message);
+        });
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

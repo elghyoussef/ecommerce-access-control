@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Moniteur d'Activité de Connexion (IA)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 30px;
+            letter-spacing: 2px;
+            color: #00e6d0;
+        }
+        p {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 90%;
+            margin: 0 auto 40px auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #fff;
+            color: #212529;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 #0005;
+        }
+        th, td {
+            padding: 14px 10px;
+            text-align: left;
+            background-color: #e9ecef;
+            color: #212529;
+        }
+        th {
+            background: #00e6d0;
+            color: #232526;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        tr:nth-child(even) { background: #2c2f33; }
+        tr:nth-child(odd) { background: #232526; }
+        .suspicious, .status .suspicious { color: #ff4c4c; font-weight: bold; }
+        .normal, .status .normal { color: #00e6d0; }
+        .error { color: orange; }
+        .status {
+            position: relative;
+            cursor: pointer;
+        }
+        .tooltip {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            min-width: 260px;
+            background: #232526;
+            color: #fff;
+            border: 2px solid #00e6d0;
+            border-radius: 10px;
+            padding: 18px 16px;
+            z-index: 100;
+            box-shadow: 0 4px 16px #000a;
+            font-size: 1rem;
+            margin-left: 10px;
+            white-space: pre-line;
+        }
+        .status:hover .tooltip {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pagination {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .pagination a {
+            color: #00e6d0;
+            background: #232526;
+            border: 1px solid #00e6d0;
+            border-radius: 6px;
+            padding: 8px 18px;
+            margin: 0 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .pagination a:hover {
+            background: #00e6d0;
+            color: #232526;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+        .badge-suspicious { background: #ff4c4c; color: #fff; }
+        .badge-normal { background: #00e6d0; color: #232526; }
+        .badge-vpn { background: #ffb300; color: #232526; }
+        .badge-impossible { background: #d72660; color: #fff; }
+        .badge-suspicious-travel { background: #ffb300; color: #232526; }
+    </style>
+</head>
+<body>
+    <h1>Moniteur d'Activité des Connexions</h1>
+    <p>Affichage de {{ (current_page - 1) * 10 + 1 }} à {{ [current_page * 10, total_items]|min }} sur {{ total_items }} entrées</p>
+    <div style="text-align:center; margin-bottom:20px; display:flex; justify-content:center; align-items:center; gap:16px;">
+        <button id="refresh-disable" style="font-size:1em; padding:4px 16px; border-radius:6px; background:#ff4c4c; color:#fff; border:none; cursor:pointer;">Désactiver</button>
+        <label for="refresh-interval" style="font-size:1.1em; color:#00e6d0; margin-right:10px;">Rafraîchissement auto :</label>
+        <select id="refresh-interval" style="font-size:1em; padding:4px 10px; border-radius:6px;">
+            <option value="0">Pas de rafraîchissement</option>
+            <option value="1000">1 seconde</option>
+            <option value="3000">3 secondes</option>
+            <option value="5000">5 secondes</option>
+            <option value="10000">10 secondes</option>
+            <option value="30000">30 secondes</option>
+            <option value="60000">1 minute</option>
+            <option value="180000">3 minutes</option>
+            <option value="300000">5 minutes</option>
+            <option value="600000">10 minutes</option>
+        </select>
+    </div>
+    <script>
+        let refreshTimer = null;
+        const select = document.getElementById('refresh-interval');
+        const disableBtn = document.getElementById('refresh-disable');
+        function setRefreshInterval() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            const val = parseInt(select.value);
+            if (val > 0) {
+                refreshTimer = setInterval(() => {
+                    window.location.reload();
+                }, val);
+            }
+        }
+        select.addEventListener('change', setRefreshInterval);
+        // Optionally, remember last choice
+        if (localStorage.getItem('refresh-interval')) {
+            select.value = localStorage.getItem('refresh-interval');
+            setRefreshInterval();
+        }
+        select.addEventListener('change', () => {
+            localStorage.setItem('refresh-interval', select.value);
+        });
+        disableBtn.addEventListener('click', () => {
+            if (refreshTimer) clearInterval(refreshTimer);
+            refreshTimer = null;
+            select.selectedIndex = 0;
+            localStorage.setItem('refresh-interval', select.value);
+        });
+    </script>
+    <table>
+        <thead>
+            <tr>
+                <th>Date/Heure</th>
+                <th>Email</th>
+                <th>Nom d'utilisateur</th>
+                <th>IP</th>
+                <th>Succès</th>
+                <th>Raison</th>
+                <th>VPN</th>
+                <th>Suspect</th>
+                <th>Pays IP</th>
+                <th>Pays Coord.</th>
+                <th>Pays Fuseau</th>
+                <th>Détection IA</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for action in actions %}
+            <tr>
+                <td>{{ action.timestamp }}</td>
+                <td>{{ action.email }}</td>
+                <td>{{ action.username }}</td>
+                <td>{{ action.geo_ip }}</td>
+                <td>{{ action.success }}</td>
+                <td>{{ action.reason }}</td>
+                <td>
+                    {% if action.vpn == 'Yes' %}
+                        <span class="badge badge-vpn">VPN/Proxy détecté</span>
+                    {% else %}
+                        <span class="badge badge-normal">Non</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if action.suspicious == 'Yes' %}
+                        <span class="badge badge-suspicious">Suspect</span>
+                        {% if action.speed > 900 %}
+                            <div class="tooltip">
+                                Voyage impossible : Distance {{ action.distance|round(1) }} km, Vitesse {{ action.speed|round(1) }} km/h
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge badge-normal">Normal</span>
+                    {% endif %}
+                </td>
+                <td>{{ action.ip_country or '-' }}</td>
+                <td>{{ action.coord_country or '-' }}</td>
+                <td>{{ action.tz_country or '-' }}</td>
+                <td>{{ action.sus_reason }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {% if current_page > 1 %}
+            <a href="/page/{{ current_page - 1 }}">Précédent</a>
+        {% endif %}
+        Page {{ current_page }} sur {{ total_pages }}
+        {% if current_page < total_pages %}
+            <a href="/page/{{ current_page + 1 }}">Suivant</a>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/css/boxicons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Arial', sans-serif;
+    }
+    .profile-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }    
+    .section-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      color: #333;
+      display: flex;
+      align-items: center;
+    }
+    .section-title i {
+      margin-right: 10px;
+      color: coral;
+    }
+    .btn-coral {
+      background-color: coral;
+      color: white;
+      border: none;
+    }    
+    .btn-coral:hover {
+      background-color: #ff6a39;
+      color: white;
+    }
+    .btn-outline-coral {
+      color: coral;
+      border-color: coral;
+    }
+    .btn-outline-coral:hover {
+      background-color: coral;
+      color: white;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .order-item {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .order-item:hover {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .order-products {
+      margin-top: 15px;
+    }
+    .product-item {
+      background-color: #f9f9f9;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .product-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-right: 15px;
+    }
+    .order-badge {
+      background-color: coral;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9em;
+    }    
+    .orders-container {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      padding-right: 5px;
+    }
+    .badge.bg-coral {
+      background-color: coral;
+    }
+    .navbar {
+      background-color: coral;
+    }
+    .navbar-brand, .nav-link {
+      color: white;
+    }    
+    .nav-link:hover {
+      color: #f8f9fa;
+    }
+    
+    /* Animation for the edit profile button */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .edit-btn-animate {
+      transition: all 0.3s ease;
+    }
+    
+    .edit-btn-animate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Make the button pulse once when page loads */
+    .edit-btn-animate {
+      animation: pulse 1.5s ease-in-out 1s 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/home">E-Commerce</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/shop">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cart">Cart</a>
+          </li>
+          <li class="nav-item admin-link" style="display: none;">
+            <a class="nav-link" href="/admin">Admin</a>
+          </li>
+          <li class="nav-item policy-link" style="display: none;">
+            <a class="nav-link" href="/policy">Security</a>
+          </li>
+        </ul>
+        <button onclick="window.location.href='/logout'" class="btn btn-light">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>Your Profile</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <!-- User Information Section -->
+        <div class="section-card mb-4" style="height: auto; min-height: 200px;">
+          <h2 class="section-title"><i class="bx bx-user"></i> Personal Information</h2>
+          <div id="user-info" class="d-flex flex-column h-100">
+            <div class="mb-3">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bx bx-user-circle me-2 text-muted"></i>
+                <strong>Username:</strong>
+                <span id="username" class="ms-2"></span>
+              </div>
+              
+              <div class="d-flex align-items-center mb-2">
+                <i class="bx bx-envelope me-2 text-muted"></i>
+                <strong>Email:</strong>
+                <span id="email" class="ms-2"></span>
+              </div>
+              
+              <div class="d-flex align-items-center">
+                <i class="bx bx-calendar me-2 text-muted"></i>
+                <strong>Birthday:</strong>
+                <span id="birthday" class="ms-2"></span>
+              </div>
+            </div>
+            <div class="mt-auto text-end">
+              <button type="button" class="btn btn-outline-coral btn-sm edit-btn-animate" id="edit-profile-btn">
+                <i class="bx bx-edit me-1"></i> Edit Profile
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Change Password Section -->
+        <div class="section-card" style="height: auto; flex-grow: 1;">
+          <h2 class="section-title"><i class="bx bx-lock-alt"></i> Change Password</h2>
+          <form id="change-password-form">
+            <div class="form-group">
+              <label for="current-password" class="form-label">Current Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-lock"></i></span>
+                <input type="password" class="form-control" id="current-password" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="new-password" class="form-label">New Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-lock-open"></i></span>
+                <input type="password" class="form-control" id="new-password" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password" class="form-label">Confirm New Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-check-shield"></i></span>
+                <input type="password" class="form-control" id="confirm-password" required>
+              </div>
+            </div>
+            <div class="d-grid gap-2 mt-4">
+              <button type="submit" class="btn btn-coral">Update Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <!-- Orders Section -->
+        <div class="section-card h-100">
+          <h2 class="section-title">
+            <i class="bx bx-package"></i> Your Orders 
+            <div class="ms-auto">
+              <span class="badge bg-coral">Purchase History</span>
+            </div>
+          </h2>
+          <div id="orders-container" class="orders-container" style="max-height: 600px;">
+            <p>Loading your orders...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- VIP Status Section -->
+  <div class="section-card mb-4" style="height: auto; min-height: 100px;">
+    <h2 class="section-title"><i class="bx bx-crown"></i> VIP Membership</h2>
+    <div id="vip-status" class="d-flex flex-column h-100">
+      <div id="vip-info" class="mb-2">
+        <span class="badge bg-secondary">Loading VIP status...</span>
+      </div>
+      <div id="vip-details" class="mb-2 small text-muted"></div>
+      <div class="mt-auto text-end">
+        <a href="/subscription" class="btn btn-outline-coral btn-sm" id="vip-action-btn">Get VIP</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+          <button type="button" class="btn-close" id="modal-close-x" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-profile-form">
+            <div class="mb-3">
+              <label for="edit-username" class="form-label">Username</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                <input type="text" class="form-control" id="edit-username" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="edit-email" class="form-label">Email</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                <input type="email" class="form-control" id="edit-email" disabled>
+                <div class="form-text text-muted">Email cannot be changed</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="edit-birthday" class="form-label">Birthday</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                <input type="date" class="form-control" id="edit-birthday">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-profile-edit">Cancel</button>
+          <button type="button" class="btn btn-coral" id="save-profile-changes">
+            <span class="spinner-border spinner-border-sm d-none" id="save-spinner" role="status" aria-hidden="true"></span>
+            <span id="save-text">Save Changes</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fetch user information
+      fetchUserInfo();
+      
+      // Fetch user orders
+      fetchUserOrders();
+      
+      // Check if user is admin for navbar visibility
+      checkAdmin();
+      
+      // Set up password change form submission
+      document.getElementById('change-password-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        changePassword();
+      });
+      
+      // Set up edit profile functionality
+      setupEditProfileModal();
+      
+      // Set up save profile changes event
+      document.getElementById('save-profile-changes').addEventListener('click', saveProfileChanges);
+      
+      // Fetch VIP status
+      fetchVipStatus();
+    });
+
+    // Function to properly close the modal and remove backdrop
+    function closeModalAndBackdrop() {
+      // Method 1: Using Bootstrap's direct dismiss
+      const modalElement = document.getElementById('editProfileModal');
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide();
+      }
+      
+      // Method 2: Make sure backdrop is removed
+      setTimeout(() => {
+        const modalBackdrops = document.querySelectorAll('.modal-backdrop');
+        modalBackdrops.forEach(backdrop => {
+          backdrop.classList.remove('show');
+          backdrop.remove();
+        });
+        
+        // Method 3: Clean document body classes
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('padding-right');
+        document.body.style.removeProperty('overflow');
+      }, 100);
+    }
+
+    function fetchUserInfo() {
+      fetch('/api/userinfo')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('username').textContent = data.username || 'Not available';
+          document.getElementById('email').textContent = data.email || 'Not available';
+          
+          // Format birthday if available
+          if (data.birthday) {
+            const date = new Date(data.birthday);
+            document.getElementById('birthday').textContent = date.toLocaleDateString();
+          } else {
+            document.getElementById('birthday').textContent = 'Not available';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching user info:', error);
+        });
+    }
+    
+    function fetchUserOrders() {
+      fetch('/api/user/orders')
+        .then(response => response.json())
+        .then(orders => {
+          const ordersContainer = document.getElementById('orders-container');
+          
+          if (orders.length === 0) {
+            ordersContainer.innerHTML = `
+              <div class="text-center py-4">
+                <i class="bx bx-package fs-1 text-muted"></i>
+                <p class="mt-3">You have no orders yet.</p>
+                <a href="/shop" class="btn btn-sm btn-coral mt-2">Go Shopping</a>
+              </div>`;
+            return;
+          }
+          
+          let html = '';
+          orders.forEach(order => {
+            const orderDate = new Date(order.order_date);
+            const today = new Date();
+            const isRecent = (today - orderDate) / (1000 * 60 * 60 * 24) < 7; // Less than 7 days old
+            
+            html += `
+              <div class="order-item">
+                <div class="order-header">
+                  <div>
+                    <h5 class="mb-1">Order #${order.id} 
+                      ${isRecent ? '<span class="order-badge ms-2">Recent</span>' : ''}
+                    </h5>
+                    <div class="text-muted small">${formatDate(order.order_date)}</div>
+                  </div>
+                  <div class="text-end">
+                    <div class="fs-5 fw-bold">$${order.total}</div>
+                    <div class="text-muted small">${order.products.length} item${order.products.length > 1 ? 's' : ''}</div>
+                  </div>
+                </div>
+                
+                <div class="order-products">`;
+            
+            order.products.forEach(product => {
+              html += `
+                <div class="product-item">
+                  <img src="${product.imgsrc || '/img/shop/1.jpg'}" alt="${product.name}" class="product-image">
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <div class="fw-bold">${product.name}</div>
+                        <div class="text-muted">Qty: ${product.quantity}</div>
+                      </div>
+                      <div class="text-end">
+                        <div>$${product.price}</div>
+                        <div class="text-muted">Total: $${(product.price * product.quantity).toFixed(2)}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>`;
+            });
+            
+            html += `
+                </div>
+              </div>
+            `;
+          });
+          
+          ordersContainer.innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Error fetching orders:', error);
+          document.getElementById('orders-container').innerHTML = '<p>Failed to load orders. Please try again later.</p>';
+        });
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    function changePassword() {
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      if (newPassword !== confirmPassword) {
+        showNotification('New passwords do not match!', 'warning');
+        return;
+      }
+      
+      if (newPassword.length < 8) {
+        showNotification('New password must be at least 8 characters long!', 'warning');
+        return;
+      }
+      
+      fetch('/api/user/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          currentPassword,
+          newPassword
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showNotification('Password changed successfully!', 'success');
+          document.getElementById('change-password-form').reset();
+        } else {
+          showNotification(data.message || 'Failed to change password', 'danger');
+        }
+      })
+      .catch(error => {
+        console.error('Error changing password:', error);
+        showNotification('An error occurred. Please try again later.', 'danger');
+      });
+    }
+    
+    function checkAdmin() {
+      fetch('/api/user')
+        .then(response => response.json())
+        .then(data => {
+          if (data.isAdmin) {
+            document.querySelector('.admin-link').style.display = 'block';
+            document.querySelector('.policy-link').style.display = 'block';
+          }
+        })
+        .catch(error => console.error('Error checking admin status:', error));
+    }
+    
+    // Setup profile modal functionality
+    function setupEditProfileModal() {
+      const editProfileModal = document.getElementById('editProfileModal');
+      const editProfileBtn = document.getElementById('edit-profile-btn');
+      const cancelBtn = document.getElementById('cancel-profile-edit');
+      const closeXBtn = document.getElementById('modal-close-x');
+      
+      // Create an instance of the Bootstrap modal
+      const modal = new bootstrap.Modal(editProfileModal);
+      
+      // Open modal when edit button is clicked
+      editProfileBtn.addEventListener('click', function() {
+        modal.show();
+      });
+      
+      // Close modal when cancel is clicked
+      cancelBtn.addEventListener('click', function() {
+        closeModalAndBackdrop();
+      });
+      
+      // Close modal when X is clicked
+      closeXBtn.addEventListener('click', function() {
+        closeModalAndBackdrop();
+      });
+      
+      // When the modal is shown, fill the form with current user data
+      editProfileModal.addEventListener('show.bs.modal', function() {
+        fetch('/api/userinfo')
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('edit-username').value = data.username || '';
+            document.getElementById('edit-email').value = data.email || '';
+            
+            // Format birthday for the date input if available
+            if (data.birthday) {
+              const date = new Date(data.birthday);
+              // Format as YYYY-MM-DD for the date input
+              const formattedDate = date.toISOString().split('T')[0];
+              document.getElementById('edit-birthday').value = formattedDate;
+            } else {
+              document.getElementById('edit-birthday').value = '';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching user info for edit:', error);
+          });
+      });
+    }
+    
+    // Function to show user-friendly notifications
+    function showNotification(message, type) {
+      // Create notification container if it doesn't exist
+      let notificationContainer = document.getElementById('notification-container');
+      if (!notificationContainer) {
+        notificationContainer = document.createElement('div');
+        notificationContainer.id = 'notification-container';
+        notificationContainer.style.position = 'fixed';
+        notificationContainer.style.top = '20px';
+        notificationContainer.style.right = '20px';
+        notificationContainer.style.zIndex = '9999';
+        notificationContainer.style.minWidth = '300px';
+        document.body.appendChild(notificationContainer);
+      }
+      
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = `alert alert-${type} alert-dismissible fade show`;
+      notification.role = 'alert';
+      notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      // Add to container
+      notificationContainer.appendChild(notification);
+      
+      // Auto-dismiss after 5 seconds
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      }, 5000);
+    }
+    
+    function saveProfileChanges() {
+      const username = document.getElementById('edit-username').value.trim();
+      const birthday = document.getElementById('edit-birthday').value;
+      const saveButton = document.getElementById('save-profile-changes');
+      const saveSpinner = document.getElementById('save-spinner');
+      const saveText = document.getElementById('save-text');
+        
+      if (!username) {
+        showNotification('Username is required', 'warning');
+        return;
+      }
+      
+      // Show loading indicator
+      saveButton.disabled = true;
+      saveSpinner.classList.remove('d-none');
+      saveText.textContent = 'Saving...';
+      
+      // Send data to API
+      fetch('/api/user/update-profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          birthday
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // First, refresh user info
+          fetchUserInfo();
+          
+          // Close the modal
+          closeModalAndBackdrop();
+          
+          // Show success message
+          showNotification('Profile updated successfully!', 'success');
+        } else {
+          showNotification(data.message || 'Failed to update profile', 'danger');
+        }
+        
+        // Reset button state
+        saveButton.disabled = false;
+        saveSpinner.classList.add('d-none');
+        saveText.textContent = 'Save Changes';
+      })
+      .catch(error => {
+        console.error('Error updating profile:', error);
+        showNotification('An error occurred while updating your profile', 'danger');
+        
+        // Reset button state
+        saveButton.disabled = false;
+        saveSpinner.classList.add('d-none');
+        saveText.textContent = 'Save Changes';
+      });
+    }
+
+    fetch('/api/vip/status')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const vipInfo = document.getElementById('vip-info');
+        const vipDetails = document.getElementById('vip-details');
+        const vipActionBtn = document.getElementById('vip-action-btn');
+        
+        if (data.isVIP) {
+          // User is VIP
+          vipInfo.innerHTML = `<span class="badge bg-success">Active VIP Member</span>`;
+          vipDetails.innerHTML = `Your VIP membership expires in ${data.daysRemaining} days.`;
+          vipActionBtn.textContent = 'Manage Membership';
+        } else {
+          // User is not VIP
+          vipInfo.innerHTML = `<span class="badge bg-secondary">Not a VIP Member</span>`;
+          vipDetails.innerHTML = 'Become a VIP member to shop anytime and unlock exclusive benefits!';
+          vipActionBtn.textContent = 'Get VIP';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching VIP status:', error);
+        document.getElementById('vip-info').innerHTML = 
+          '<span class="badge bg-danger">Error loading VIP status</span>';
+      });
+  </script>
+</body>
+</html>

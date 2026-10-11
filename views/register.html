@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign-up</title>
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container_reg {
+            background-color: #fff;
+            padding: 30px; /* Augmenté pour plus d'espace */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 420px; /* Largeur augmentée */
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .register-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .register-box .login-link {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .register-box .login-link a {
+            color: coral;
+            text-decoration: none;
+        }
+
+        .register-box .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .register-box form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-container i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .register-box input {
+            padding: 8px 10px 8px 40px; /* Réduit le padding pour diminuer la hauteur */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px; /* Taille de police inchangée pour la lisibilité */
+            width: 100%; /* Largeur complète */
+            box-sizing: border-box; /* Inclut le padding dans la largeur */
+        }
+
+        .register-box button {
+            padding: 10px;
+            background-color: coral;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%; /* Largeur complète pour le bouton */
+        }
+
+        .register-box button:hover {
+            background-color: #ff7f50; /* Changer la couleur au hover */
+        }
+    </style>    <script>
+        function validateForm() {
+            const email = document.forms["registerForm"]["email"].value;
+            const password = document.forms["registerForm"]["password"].value;
+            const birthday = document.forms["registerForm"]["birthday"].value;
+            const emailRegex = /^[^\s@]+@gmail\.com$/;
+
+            if (!emailRegex.test(email)) {
+                alert("Email invalide");
+                return false;
+            }
+
+            if (password.length < 8) {
+                alert("Le mot de passe doit contenir au moins 8 caractères");
+                return false;
+            }
+
+            if (!birthday) {
+                alert("Veuillez entrer votre date de naissance");
+                return false;
+            }
+
+            alert("Formulaire validé");
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container_reg">
+        <div class="logo">
+            <!-- <img src="./images/imglogo.jpg" class='imglogo' alt='logo' /><h1>TJA</h1> -->
+        </div>
+        <div class="register-box">
+            <h2>Register</h2>
+            <p class="login-link">
+                Have an account? <a href="/">Login</a>
+            </p>
+            <form name="registerForm" action="/register" method="POST" onsubmit="return validateForm()">
+                <div class="input-container">
+                    <i class='bx bx-user'></i>
+                    <input type="text" placeholder="Username" required="" name="username"/>
+                </div>                <div class="input-container">
+                    <i class='bx bx-envelope'></i>
+                    <input type="email" placeholder="Email Address" required="" name="email" />
+                </div>
+                <div class="input-container">
+                    <i class='bx bx-calendar'></i>
+                    <input type="date" placeholder="Birthday" required="" name="birthday" />
+                </div>
+                <div class="input-container">
+                    <i class='bx bx-lock'></i>
+                    <input type="password" placeholder="Password" required="" name="password" />
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

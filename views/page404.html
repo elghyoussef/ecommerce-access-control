@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Not Found</title>
+  <link rel="stylesheet" href="stylesheets/login.css" />
+  <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
+  <style> 
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .parent2 {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    .p404 {
+      font-size: 72px;
+      color: #333;
+      margin: 0;
+      display: flex;
+      align-items: center; /* Aligner verticalement l'icône */
+      justify-content: center; /* Centrer horizontalement */
+    }
+
+    .p404 i {
+      font-size: 80px; /* Taille de l'icône */
+      margin-right: 10px; /* Espace entre l'icône et le texte */
+      color: coral; /* Couleur de l'icône */
+    }
+
+    .notfound {
+      margin: 20px 0;
+      font-size: 18px;
+      color: #666;
+    }
+
+    .fin {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .fin a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .fin a:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      background-color: coral;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 90%;
+    }
+
+    .btn:hover {
+      background-color: #ff7f50; /* Changer la couleur au hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="parent2">
+    <div class="logout">
+      <p class="p404">
+        <i class='bx bx-error-circle'></i> 404
+      </p>
+      <p class="notfound">The page you're looking for is not found.</p>
+      <p class="fin">Make sure the address is correct and that the page hasn't moved. If you think this is a mistake,
+      <a href="#" onclick="contactUs()">contact us.</a></p>
+      <input type="button" class="btn" value="return to login" onclick="window.location.href='/login'" />
+    </div>
+  </div>
+
+  <script>
+    function contactUs() {
+      window.location.href = "mailto:contact@example.com";
+    }
+  </script>
+</body>
+</html>
