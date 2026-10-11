@@ -6,10 +6,14 @@ A bachelor's final-year team project studying application security and attribute
 **Authors:** Youssef El Ghouari and Lahcen Houban, with credits retained from the original application  
 **Original team repository:** [Yassermar11/pfe](https://github.com/Yassermar11/pfe)
 
+![Administrative time-based access policy settings](assets/time-policy.png)
+
+*Schedule and access-mode configuration from the original project report.*
+
 ## Focus
 
 - Authentication and session management.
-- Access policies based on user attributes and contextual conditions.
+- Geographic, age and time-based access policies.
 - Protected application routes and administrative policy management.
 - A Python experiment for suspicious-login detection.
 - Access-control modelling in the P language.
@@ -17,6 +21,17 @@ A bachelor's final-year team project studying application security and attribute
 ## Stack
 
 Node.js, Express, MySQL, HTML/CSS/JavaScript, Python and Flask.
+
+## Attribute-Based Policies
+
+![Minimum and maximum age settings in the administrative interface](assets/age-policy.png)
+
+*Age-policy settings: user attributes become inputs to the access decision.*
+
+[Geographic policy flow and visual sources](docs/project-overview.md)
+
+<details>
+<summary>Publication scope, setup and security limitations</summary>
 
 ## Publication Scope
 
@@ -33,6 +48,8 @@ Use an isolated local database with synthetic records. Dependency and security u
 Import `database/schema.sql` into an empty laboratory database before studying the routes. Some policies require synthetic configuration records of your own. The portfolio edition removes the original self-referencing package dependency, uses environment variables for server/database configuration and binds the Express server to localhost.
 
 The publication dependency audit reports 21 vulnerabilities, including 4 critical findings. Do not expose this academic version to the internet. JavaScript and Python syntax checks pass; a complete application integration test has not been performed.
+
+</details>
 
 ## Credits
 
