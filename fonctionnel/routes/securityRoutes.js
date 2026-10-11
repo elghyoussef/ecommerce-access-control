@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../non_fonctionnel/db');
+router.use('/policy', (req, res, next) => {
+    if (!req.session?.user) return res.status(401).json({ error: 'Authentication required' });
+    if (req.session.user.isAdmin !== 1) return res.status(403).json({ error: 'Administrator required' });
+    next();
+});
 
 // Route pour obtenir la configuration de sécurité actuelle
 router.get('/policy/country', async (req, res) => {

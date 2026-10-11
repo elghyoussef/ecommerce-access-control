@@ -1,0 +1,20 @@
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+      MARIADB_DATABASE: ${DB_NAME:?Run npm run setup first}
+      MARIADB_USER: ${DB_USER:?Run npm run setup first}
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Run npm run setup first}
+    ports:
+      - "127.0.0.1:${DB_PORT:-3307}:3306"
+    volumes:
+      - lab-db:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+volumes:
+  lab-db:

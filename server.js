@@ -5,12 +5,13 @@ const session = require('express-session');
 const path = require('path');
 const multer = require('multer');
 const app = express();
-const port = 3030;
+const port = Number(process.env.PORT || 3030);
 
 // Import des modules personnalisés
 const mysql = require('mysql');
 const connection = mysql.createPool({
   host: process.env.DB_HOST || '127.0.0.1',
+  port: Number(process.env.DB_PORT || 3306),
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
@@ -30,6 +31,14 @@ setConnection(connection);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.get('/health', async (req, res) => {
+  try {
+    await db.query('SELECT 1');
+    res.json({ status: 'ok', database: 'connected' });
+  } catch (error) {
+    res.status(503).json({ status: 'unavailable', database: 'disconnected' });
+  }
+});
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -58,8 +67,8 @@ require('./fonctionnel/routes/vipRoutes')(app, connection, isAuthenticated); // 
 require('./fonctionnel/routes/errorRoutes')(app, path);
 
 // Commencez le serveur
-app.listen(port, '127.0.0.1', () => {
-  console.log(`Serveur démarré sur le port http://localhost:${port}`);
+const server = app.listen(port, '127.0.0.1', () => {
+  console.log(`Serveur démarré sur le port http://localhost:${server.address().port}`);
   
   // Run VIP cleanup at server startup
   console.log('Running VIP subscription cleanup at startup...');

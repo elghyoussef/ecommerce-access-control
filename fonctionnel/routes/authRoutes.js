@@ -71,7 +71,6 @@ module.exports = function(app, connection, bcryptHash, queryPromise, isAuthentic
         }
         
         logLoginAttempt({ email, username: user.username, success: true, reason: 'Login successful', ip: req.ip });
-        console.log('Connexion réussie pour l\'utilisateur:', req.session.user);
         res.send("<script>alert('Connexion réussie'); window.location.href = '/home';</script>");
       });
     });
@@ -549,7 +548,6 @@ module.exports = function(app, connection, bcryptHash, queryPromise, isAuthentic
         vip_expiry_date: user.vip_expiry_date 
       };
       logLoginAttempt({ email, username: user.username, success: true, reason: 'Login successful', ip, geoInfo });
-      console.log('Connexion API réussie pour l\'utilisateur:', req.session.user);
       return res.json({ success: true, message: "Authentification réussie.", redirectUrl: '/home' });
     } catch (err) {
       console.error('Erreur lors de la connexion API:', err);
