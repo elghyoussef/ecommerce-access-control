@@ -52,4 +52,4 @@ The publication dependency audit reports 21 vulnerabilities, including 4 critica
 
 ## Credits
 
-This is a portfolio edition of a collaborative academic project, not a claim of sole authorship. The original team repository is linked above. No new license is applied to jointly authored or third-party material.
+This is a portfolio edition of a collaborative academic project, not a claim of sole authorship. The original team repository is linked in the [project overview](docs/project-overview.md). No new license is applied to jointly authored or third-party material.
